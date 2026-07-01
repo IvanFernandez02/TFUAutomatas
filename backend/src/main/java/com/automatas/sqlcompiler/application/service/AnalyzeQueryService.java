@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Servicio Orquestador del Mini-Compilador de SQL en Español.
+ * Coordina la ejecución secuencial de las fases léxica, sintáctica y semántica.
+ */
 @Service
 public class AnalyzeQueryService implements AnalyzeQueryUseCase {
 
@@ -41,11 +45,19 @@ public class AnalyzeQueryService implements AnalyzeQueryUseCase {
         this.ollamaPort = ollamaPort;
     }
 
+    /**
+     * Ejecuta el análisis completo de una consulta SQL en español.
+     * 
+     * @param query Consulta SQL en crudo ingresada por el usuario.
+     * @return El resultado detallado de todas las fases del compilador.
+     */
     @Override
     public AnalysisResult analyze(String query) {
+        // 1. Normalización: Limpieza y estandarización del texto de entrada
         String normalizedQuery = queryNormalizer.normalize(query);
         List<PhaseError> phaseErrors = new ArrayList<>();
 
+        // 2. Fase Léxica: Extracción y validación de tokens
         LexicalResult lexicalResult = lexicalService.analyze(normalizedQuery);
         if (!lexicalResult.errors().isEmpty()) {
             phaseErrors.add(new PhaseError(
@@ -58,19 +70,26 @@ public class AnalyzeQueryService implements AnalyzeQueryUseCase {
         AstNode astNode = null;
         List<String> semanticErrors = List.of();
 
+        // 3. Fase Sintáctica Formal y Fase Semántica
+        // Solo se ejecutan si la consulta no tiene errores léxicos previos.
         if (lexicalResult.errors().isEmpty()) {
             try {
+                // Análisis Sintáctico: Construcción del árbol (AST)
                 astNode = syntacticParser.parse(lexicalResult.tokens());
                 astFormal = astNode.toMap();
+                
+                // Análisis Semántico: Validación de tablas, columnas y tipos con la Tabla de Símbolos
                 semanticErrors = semanticService.analyze(astNode);
             } catch (SyntacticParser.SyntaxException ex) {
                 phaseErrors.add(new PhaseError("sintactico", ex.getMessage()));
             }
         }
 
+        // 4. Fase Sintáctica LLM (Ollama): Generación del AST con Inteligencia Artificial
         SyntacticLlmService.LlmAstResult llmResult =
                 syntacticLlmService.generateAst(query, lexicalResult.tokens());
 
+        // La consulta es completamente válida si no hay errores en ninguna fase
         boolean valid = phaseErrors.isEmpty()
                 && semanticErrors.isEmpty()
                 && astNode != null
@@ -92,3 +111,4 @@ public class AnalyzeQueryService implements AnalyzeQueryUseCase {
         );
     }
 }
+
