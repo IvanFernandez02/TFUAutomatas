@@ -1,4 +1,4 @@
-export default function SemanticPanel({ valid, semanticErrors, phaseErrors, normalizedQuery }) {
+export default function SemanticPanel({ valid, semanticErrors, phaseErrors, normalizedQuery, executionResult }) {
   return (
     <section className="panel">
       <h3>Resultado semántico</h3>
@@ -8,6 +8,16 @@ export default function SemanticPanel({ valid, semanticErrors, phaseErrors, norm
       <p className={valid ? 'success' : 'error'}>
         {valid ? 'Consulta válida en todas las fases.' : 'La consulta contiene errores.'}
       </p>
+
+      {valid && executionResult && (
+        <div className={`execution-badge ${executionResult.success ? 'exec-success' : 'exec-error'}`}>
+          <span>{executionResult.success ? '✅' : '❌'}</span>
+          <span>{executionResult.success ? 'Ejecutado exitosamente en PostgreSQL' : 'Error al ejecutar en PostgreSQL'}</span>
+          {executionResult.executed_sql && (
+            <code className="exec-sql">{executionResult.executed_sql}</code>
+          )}
+        </div>
+      )}
 
       {phaseErrors.length > 0 && (
         <div>

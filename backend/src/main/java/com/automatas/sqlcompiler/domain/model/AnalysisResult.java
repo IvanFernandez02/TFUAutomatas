@@ -15,6 +15,7 @@ public record AnalysisResult(
         Map<String, Object> lexicalExplanation,
         List<String> semanticErrors,
         List<PhaseError> phaseErrors,
-        boolean valid
+        boolean valid,
+        ExecutionResult executionResult
 ) {
 }

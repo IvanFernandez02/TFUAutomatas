@@ -19,3 +19,8 @@ export async function fetchHealth() {
   const { data } = await client.get('/health')
   return data
 }
+
+export async function fetchTableData(tableName) {
+  const { data } = await client.get(`/tables/${tableName}/data`)
+  return data
+}

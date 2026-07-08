@@ -18,7 +18,8 @@ public record AnalyzeResponseDto(
         @JsonProperty("lexical_explanation") Map<String, Object> lexicalExplanation,
         @JsonProperty("semantic_errors") List<String> semanticErrors,
         @JsonProperty("phase_errors") List<PhaseErrorDto> phaseErrors,
-        boolean valid
+        boolean valid,
+        @JsonProperty("execution_result") ExecutionResultDto executionResult
 ) {
     public static AnalyzeResponseDto from(AnalysisResult result) {
         return new AnalyzeResponseDto(
@@ -33,7 +34,8 @@ public record AnalyzeResponseDto(
                 result.lexicalExplanation(),
                 result.semanticErrors(),
                 result.phaseErrors().stream().map(PhaseErrorDto::from).toList(),
-                result.valid()
+                result.valid(),
+                ExecutionResultDto.from(result.executionResult())
         );
     }
 }
