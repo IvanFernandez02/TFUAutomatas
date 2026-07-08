@@ -105,7 +105,11 @@ export default function App() {
           </div>
 
           {activeTab === 'tokens' && (
-            <TokenPanel tokens={result?.tokens || []} nlpSegments={result?.nlp_segments || []} />
+            <TokenPanel
+              tokens={result?.tokens || []}
+              nlpSegments={result?.nlp_segments || []}
+              lexicalExplanation={result?.lexical_explanation}
+            />
           )}
           {activeTab === 'syntax' && (
             <SyntaxTreePanel
@@ -113,6 +117,7 @@ export default function App() {
               astLlm={result?.ast_llm}
               astLlmAvailable={result?.ast_llm_available}
               astLlmMessage={result?.ast_llm_message}
+              syntaxError={result?.phase_errors?.find((e) => e.phase === 'sintactico')?.message}
             />
           )}
           {activeTab === 'semantic' && (

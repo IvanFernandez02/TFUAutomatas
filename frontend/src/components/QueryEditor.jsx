@@ -4,8 +4,8 @@ const EXAMPLES_GROUPS = [
     items: [
       { label: 'Ver todos', query: 'SELECCIONAR * DESDE usuarios' },
       { label: 'Filtrar por edad', query: 'SELECCIONAR nombre, edad DESDE usuarios CUANDO edad > 18' },
-      { label: 'Insertar usuario', query: "INSERTAR EN usuarios (nombre, edad, email) VALORES ('Cesar', 21, 'cesarramos@gmail.com')" },
-      { label: 'Modificar edad', query: "MODIFICAR usuarios ESTABLECER edad = 22 CUANDO nombre = 'Cesar'" },
+      { label: 'Insertar usuario', query: "INSERTAR EN usuarios (nombre, edad) VALORES ('nombre', 21)" },
+      { label: 'Modificar edad', query: "MODIFICAR usuarios ESTABLECER edad = 22 CUANDO nombre = 'nombre'" },
       { label: 'Eliminar joven', query: 'ELIMINAR DESDE usuarios CUANDO edad < 18' },
     ]
   },
