@@ -1,0 +1,12 @@
+com/automatas/lexico/infrastructure/adapter/in/web/dto/TokenDto.class
+com/automatas/lexico/infrastructure/adapter/in/web/dto/LexicalRequest.class
+com/automatas/lexico/infrastructure/adapter/in/web/GlobalExceptionHandler.class
+com/automatas/lexico/infrastructure/adapter/in/web/LexicoController.class
+com/automatas/lexico/application/RegexLexicalAnalyzer$TokenPattern.class
+com/automatas/lexico/infrastructure/config/CorsConfig$1.class
+com/automatas/lexico/infrastructure/adapter/in/web/dto/LexicalErrorDto.class
+com/automatas/lexico/infrastructure/config/CorsConfig.class
+com/automatas/lexico/infrastructure/adapter/in/web/dto/LexicalResponseDto.class
+com/automatas/lexico/domain/port/in/LexicalAnalyzer.class
+com/automatas/lexico/application/RegexLexicalAnalyzer.class
+com/automatas/lexico/LexicoApplication.class

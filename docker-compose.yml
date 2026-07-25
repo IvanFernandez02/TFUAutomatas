@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  # ============================================================
+  # Microservicio: Analisis Lexico (tokens + errores)
+  # ============================================================
+  lexico:
+    build:
+      context: ./backend
+      dockerfile: lexico-service/Dockerfile
+    container_name: lexico-service
+    ports:
+      - "8081:8081"
+    networks:
+      - sql-compiler-net
+    restart: unless-stopped
+
+  # ============================================================
+  # Microservicio: Analisis Sintactico (AST + LLM)
+  # ============================================================
+  sintactico:
+    build:
+      context: ./backend
+      dockerfile: sintactico-service/Dockerfile
+    container_name: sintactico-service
+    ports:
+      - "8082:8082"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434/api/generate
+      - OLLAMA_TAGS-URL=http://ollama:11434/api/tags
+    networks:
+      - sql-compiler-net
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  # ============================================================
+  # Microservicio: Orquestador (semantico + DB + endpoints)
+  # ============================================================
+  semantico:
+    build:
+      context: ./backend
+      dockerfile: semantico-service/Dockerfile
+    container_name: semantico-service
+    ports:
+      - "8080:8080"
+    environment:
+      - LEXICO_SERVICE_URL=http://lexico:8081
+      - SINTACTICO_SERVICE_URL=http://sintactico:8082
+      - OLLAMA_HOST=http://ollama:11434/api/generate
+      - OLLAMA_TAGS-URL=http://ollama:11434/api/tags
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/sql_automata
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - sql-compiler-net
+    depends_on:
+      - lexico
+      - sintactico
+      - postgres
+      - ollama
+    restart: unless-stopped
+
+  # ============================================================
+  # Base de datos PostgreSQL (compartida por todos los servicios)
+  # ============================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: sql-compiler-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: sql_automata
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/semantico-service/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - sql-compiler-net
+    restart: unless-stopped
+
+  # ============================================================
+  # LLM: Ollama
+  # ============================================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: sql-compiler-ollama
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - sql-compiler-net
+    restart: unless-stopped
+
+  # ============================================================
+  # Frontend: React + Nginx
+  # ============================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sql-compiler-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - semantico
+    networks:
+      - sql-compiler-net
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  ollama_data:
+
+networks:
+  sql-compiler-net:
+    driver: bridge

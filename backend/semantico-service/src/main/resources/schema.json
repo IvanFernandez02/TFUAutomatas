@@ -1,0 +1,17 @@
+{
+  "usuarios": {
+    "columnas": {
+      "id": "entero",
+      "nombre": "texto",
+      "edad": "entero",
+      "email": "texto"
+    }
+  },
+  "productos": {
+    "columnas": {
+      "id": "entero",
+      "nombre": "texto",
+      "precio": "decimal"
+    }
+  }
+}

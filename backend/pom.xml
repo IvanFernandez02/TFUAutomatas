@@ -12,42 +12,20 @@
     </parent>
 
     <groupId>com.automatas</groupId>
-    <artifactId>sql-mini-compiler</artifactId>
+    <artifactId>sql-mini-compiler-backend</artifactId>
     <version>1.0.0</version>
-    <name>sql-mini-compiler</name>
-    <description>Mini-compilador SQL en español con arquitectura hexagonal</description>
+    <packaging>pom</packaging>
+    <name>sql-mini-compiler-backend</name>
+    <description>Backend del Mini-Compilador SQL - Multi-module</description>
+
+    <modules>
+        <module>shared-domain</module>
+        <module>lexico-service</module>
+        <module>sintactico-service</module>
+        <module>semantico-service</module>
+    </modules>
 
     <properties>
         <java.version>21</java.version>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -1,0 +1,16 @@
+com/automatas/sintactico/application/CombinedSyntacticAnalyzer.class
+com/automatas/sintactico/domain/port/in/SyntacticAnalyzer.class
+com/automatas/sintactico/infrastructure/adapter/out/ollama/OllamaClientAdapter.class
+com/automatas/sintactico/infrastructure/adapter/in/web/dto/SyntacticErrorDto.class
+com/automatas/sintactico/infrastructure/config/CorsConfig.class
+com/automatas/sintactico/application/FormalSyntacticParser$SyntaxException.class
+com/automatas/sintactico/infrastructure/adapter/in/web/GlobalExceptionHandler.class
+com/automatas/sintactico/infrastructure/config/CorsConfig$1.class
+com/automatas/sintactico/application/LlmSyntacticAnalyzer$1.class
+com/automatas/sintactico/infrastructure/adapter/in/web/dto/SyntacticResponseDto.class
+com/automatas/sintactico/SintacticoApplication.class
+com/automatas/sintactico/infrastructure/adapter/in/web/SintacticoController.class
+com/automatas/sintactico/infrastructure/adapter/in/web/dto/SyntacticRequest.class
+com/automatas/sintactico/application/LlmSyntacticAnalyzer.class
+com/automatas/sintactico/application/LlmSyntacticAnalyzer$LlmAstResult.class
+com/automatas/sintactico/application/FormalSyntacticParser.class
